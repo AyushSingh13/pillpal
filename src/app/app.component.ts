@@ -4,7 +4,8 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { TabsPage } from '../pages/tabs/tabs';
-import {BackandService} from '../providers/backandService'
+import {BackandService} from '../providers/backandService';
+import {HomePage} from '../pages/home/home';
 
 
 
@@ -12,7 +13,7 @@ import {BackandService} from '../providers/backandService'
   template: `<ion-nav [root]="rootPage"></ion-nav>`
 })
 export class MyApp {
-  rootPage = TabsPage;
+  rootPage: any = HomePage;
   
 
   constructor(platform: Platform, private backandService:BackandService) {
@@ -22,7 +23,7 @@ export class MyApp {
 
       //StatusBar.styleDefault();
       backandService.setIsMobile(platform.is('mobile'));
-      backandService.setAppName('PillPal');
+      backandService.setAppName('pillpal');
       backandService.setSignUpToken('d81c9627-821c-4283-90b4-69d4da97fbbf');
       backandService.setAnonymousToken('88bfd02b-0364-4e43-9f14-247e56208dec');
     });

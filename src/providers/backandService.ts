@@ -2,6 +2,7 @@
  * Created by backand on 3/23/16.
  */
 
+ 
 export enum EVENTS {
   SIGNIN,
   SIGNOUT,
@@ -83,6 +84,7 @@ export class BackandService {
   }
 
   // configuration of SDK
+  
   public setIsMobile(isMobile: boolean) {
       this.isMobile = isMobile;
   }
@@ -735,6 +737,35 @@ export class BackandService {
       return res.json().access_token;
   }
 
+  public getTodos() {
+    return this.http.get(this.api_url + '/1/objects/todos?returnObject=true', {
+      headers: this.authHeader
+    })
+    .map(res => res.json())
+  }
+
+  public addTodo(name: string) {
+    let data = JSON.stringify({name: name});
+
+    return this.http.post(this.api_url + '/1/objects/todos?returnObject=true', data,
+    {
+      headers: this.authHeader
+    })
+    .map(res => {
+      return res.json();
+    });
+  }
+
+  public removeTodo(id: string) {
+    return this.http.delete(this.api_url + '/1/objects/todos/' + id,
+    {
+      headers: this.authHeader
+    })
+    .map(res => {
+      return res.json();
+    });
+  }
+
   private get authHeader() {
       var authHeader = new Headers();
       if (this.auth_token && this.auth_token.header_name && this.auth_token.header_value){
@@ -746,4 +777,6 @@ export class BackandService {
   public logError(err) {
       console.error('Error: ' + err);
   }
+
+
 }
