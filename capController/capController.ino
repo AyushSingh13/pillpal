@@ -1,10 +1,17 @@
 /** 
  *  Code to control Phill
  */
+#include <CurieBLE.h>
 
 #define LED 6 //connect LED to digital pin 6
 #define SPK 7 //connect speaker to digital pin 7
 #define BTN 2 //connect pushbutton to digital pin 2
+
+/* =========================Bluetooth variables========================= */
+BLEPeripheral blePeripheral; // create peripheral instance
+BLEService ledService("19B10010-E8F2-537E-4F6C-D104768A1214"); // create service
+BLECharCharacteristic ledCharacteristic("19B10011-E8F2-537E-4F6C-D104768A1214", BLERead | BLEWrite);
+
 
 int length = 4;         /* the number of notes */
 char notes[] = "cdeg";
@@ -12,20 +19,41 @@ int beats[] = { 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 2, 4 };
 int tempo = 60;
 int state = 2;  // 0 means alarm off, 1 means alarm set, 2 means alarm on
 int count = 0;
+unsigned long currTime;
 
 void setup() {                
   // initialize the digital pin2 as an output.
   pinMode(LED, OUTPUT);
   pinMode(SPK, OUTPUT);  
   pinMode(BTN, INPUT);
+
+  blePeripheral.setLocalName("Phil1");
+  blePeripheral.setAdvertisedServiceUuid(ledService.uuid());
+
+  blePeripheral.addAttribute(ledService);
+  blePeripheral.addAttribute(ledCharacteristic);
+  ledCharacteristic.setValue(0);
+  blePeripheral.begin();
+  Serial.println("Bluetooth device active, waiting for connections...");
+
+  currTime = millis();
 }
 
 
 void loop() {
+
+  
   if (state == 0) {
     // Check for alarm being scheduled
+    blePeripheral.poll();
+    if(ledCharacteristic.written()) {
+      currTime = millis();
+      state = 1;
+    }
   } else if (state == 1) {
-    // stay here till alarm time
+    if (millis() > currTime + 5000) {
+            state = 2;
+    }
   } else if(state == 2) {
       alarm();
       if(digitalRead(BTN) == HIGH) {
