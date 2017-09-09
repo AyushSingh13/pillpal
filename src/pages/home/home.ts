@@ -3,7 +3,7 @@ import {Component} from '@angular/core';
 import {BackandService} from '../../providers/backandService';
 
 @Component({
-  templateUrl: 'build/pages/home/home.html',
+  templateUrl: 'home.html',
   providers: [BackandService]
 })
 export class HomePage {

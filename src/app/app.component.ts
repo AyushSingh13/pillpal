@@ -13,7 +13,7 @@ import {HomePage} from '../pages/home/home';
   template: `<ion-nav [root]="rootPage"></ion-nav>`
 })
 export class MyApp {
-  rootPage: any = HomePage;
+  rootPage: any = TabsPage;
   
 
   constructor(platform: Platform, private backandService:BackandService) {
