@@ -10,7 +10,8 @@ int length = 4;         /* the number of notes */
 char notes[] = "cdeg";
 int beats[] = { 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 2, 4 };
 int tempo = 60;
-int alarmOn = 0;
+int state = 2;  // 0 means alarm off, 1 means alarm set, 2 means alarm on
+int count = 0;
 
 void setup() {                
   // initialize the digital pin2 as an output.
@@ -21,25 +22,36 @@ void setup() {
 
 
 void loop() {
-  alarm(alarmOn);
-}
-
-// start/stop alarm sequence
-void alarm(bool ON) {
-  if(ON) {
-    flash(250,10);
-    playSong();
+  if (state == 0) {
+    // Check for alarm being scheduled
+  } else if (state == 1) {
+    // stay here till alarm time
+  } else if(state == 2) {
+      alarm();
+      if(digitalRead(BTN) == HIGH) {
+        state = 0;
+      }
+  }
+  else {
+    
   }
 }
 
+// start/stop alarm sequence
+void alarm() {
+  flash(250);
+  if (count % 20 == 0)
+    playSong();
+  count = count + 1;
+
+}
+
 // flash the LED in an alarming manner
-void flash(int timeOn, int numFlash) {
-  for (int i = 0; i < numFlash; i++) {
+void flash(int timeOn) {
     digitalWrite(LED, HIGH);
     delay(timeOn);
     digitalWrite(LED, LOW);
     delay(timeOn);
-  }
 }
 
 // play the note sequence
