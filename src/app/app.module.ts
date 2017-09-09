@@ -7,6 +7,7 @@ import { HttpModule } from '@angular/http';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 import { ProfilePage } from '../pages/profile/profile';
+import { AboutPage } from '../pages/about/about';
 
 
 import { StatusBar } from '@ionic-native/status-bar';
@@ -18,7 +19,8 @@ import { BackandService } from '../providers/backandService';
     MyApp,
     HomePage,
     TabsPage,
-    ProfilePage
+    ProfilePage,
+    AboutPage
   ],
   imports: [
     BrowserModule,
@@ -30,7 +32,8 @@ import { BackandService } from '../providers/backandService';
     MyApp,
     HomePage,
     TabsPage,
-    ProfilePage
+    ProfilePage,
+    AboutPage
   ],
   providers: [
 /*     StatusBar,
